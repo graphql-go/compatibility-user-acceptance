@@ -7,7 +7,12 @@ Current implementation supports the following GraphQL implementations:
 
 ## Use Cases
 
-- Cross validating of compatibility between implementation versions of UX metrics.
+- Cross validation of compatibility between implementations of the following UX metrics:
+  - GitHub Stars.
+  - GitHub Issues (Open/Closed).
+  - GitHub Issues (Open/Closed, comments that are related to the specification).
+  - GitHub Pull Requests (open/closed).
+  - GitHub Forks.
 
 ### Contribute Back
 
@@ -24,13 +29,3 @@ Running the library:
 ```
 ./bin/start.sh
 ```
-
-
-
-User Acceptance Testing: Process to test the software library with end-users in terms of metrics that proves their engagement and satisfaction aligned with the specification, the following criterias are collected and compared:
-
-GitHub Stars.
-GitHub Issues (Open/Closed).
-GitHub Issues (Open/Closed, comments that are related to the specification).
-GitHub Pull Requests (open/closed).
-GitHub Forks.
