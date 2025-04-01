@@ -13,6 +13,8 @@ Current implementation supports the following GraphQL implementations:
   - GitHub Issues (Open/Closed, comments that are related to the specification).
   - GitHub Pull Requests (open/closed).
   - GitHub Forks.
+- The end result compares the implementation and the reference in terms of percentage consolidating into a single number that is wired to a % that is the base line for considering that it passes or not the check. 
+
 
 ### Contribute Back
 
