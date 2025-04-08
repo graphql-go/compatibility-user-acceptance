@@ -1,13 +1,13 @@
 # Compatibility User Acceptance
 
-Golang CLI library for **validating compatibility** of any GraphQL implementation UX metrics against the GraphQL reference implementation: [graphql-js](https://github.com/graphql/graphql-js).
+Golang CLI library for **validating compatibility** of any GraphQL implementation DX metrics against the GraphQL reference implementation: [graphql-js](https://github.com/graphql/graphql-js).
 
 Current implementation supports the following GraphQL implementations:
 - [https://github.com/graphql-go/graphql](https://github.com/graphql-go/graphql)
 
 ## Use Cases
 
-- Cross validation of compatibility between implementations of the following UX metrics:
+- Cross validation of compatibility between implementations leveraging the following DX metrics:
   - GitHub Stars.
   - GitHub Issues (Open/Closed).
   - GitHub Issues (Open/Closed, comments that are related to the specification).
