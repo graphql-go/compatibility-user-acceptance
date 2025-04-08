@@ -12,7 +12,11 @@ func main() {
 	cfg := config.Config{}
 
 	ex := extractor.Extractor{}
-	r, err := ex.Run(&extractor.RunParams{})
+	params := extractor.RunParams{
+		Organization:   "graphql-go",
+		RepositoryName: "graphql",
+	}
+	r, err := ex.Run(&params)
 	if err != nil {
 		log.Fatal(err)
 	}
