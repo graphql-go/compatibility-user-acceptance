@@ -2,7 +2,6 @@ package extractor
 
 import (
 	"context"
-	"log"
 
 	"github.com/google/go-github/github"
 )
@@ -31,7 +30,7 @@ func (e *Extractor) Run() (*RunResult, error) {
 	ctx := context.Background()
 	repo, _, err := client.Repositories.Get(ctx, "graphql-go", "graphql")
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
 	r := &Repository{
