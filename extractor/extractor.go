@@ -1,6 +1,9 @@
 package extractor
 
 import (
+	"context"
+	"log"
+
 	"github.com/google/go-github/github"
 )
 
@@ -10,7 +13,12 @@ type Extractor struct {
 type RunParams struct {
 }
 
+type Repository struct {
+	StarsCount int
+}
+
 type RunResult struct {
+	Repository *Repository
 }
 
 func New() *Extractor {
@@ -34,13 +42,5 @@ func (e *Extractor) Run() (*RunResult, error) {
 		Repository: r,
 	}
 
-	return r
-}
-
-type Repository struct {
-	StarsCount int
-}
-
-type RunResult struct {
-	Repository *Repository
+	return result, nil
 }
