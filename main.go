@@ -1,7 +1,13 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/graphql-go/compatibility-base/config"
+)
 
 func main() {
-	fmt.Println("ok")
+	cfg := config.Config{}
+
+	fmt.Println(cfg.IsDebug)
 }
