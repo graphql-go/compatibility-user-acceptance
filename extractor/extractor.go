@@ -10,6 +10,8 @@ type Extractor struct {
 }
 
 type RunParams struct {
+	Organization   string
+	RepositoryName string
 }
 
 type Repository struct {
@@ -28,7 +30,7 @@ func New() *Extractor {
 func (e *Extractor) Run(p *RunParams) (*RunResult, error) {
 	client := github.NewClient(nil)
 	ctx := context.Background()
-	repo, _, err := client.Repositories.Get(ctx, "graphql-go", "graphql")
+	repo, _, err := client.Repositories.Get(ctx, p.Organization, p.RepositoryName)
 	if err != nil {
 		return nil, err
 	}
