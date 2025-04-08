@@ -8,7 +8,11 @@ import (
 
 func TestExtractorRun(t *testing.T) {
 	ex := &Extractor{}
-	result, err := ex.Run(&RunParams{})
+	params := RunParams{
+		Organization:   "graphql-go",
+		RepositoryName: "graphql",
+	}
+	result, err := ex.Run(&params)
 	assert.NoError(t, err)
 	assert.NotNil(t, result)
 }
