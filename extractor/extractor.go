@@ -25,7 +25,7 @@ func New() *Extractor {
 	return &Extractor{}
 }
 
-func (e *Extractor) Run() (*RunResult, error) {
+func (e *Extractor) Run(p *RunParams) (*RunResult, error) {
 	client := github.NewClient(nil)
 	ctx := context.Background()
 	repo, _, err := client.Repositories.Get(ctx, "graphql-go", "graphql")

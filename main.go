@@ -12,7 +12,7 @@ func main() {
 	cfg := config.Config{}
 
 	ex := extractor.Extractor{}
-	r, err := ex.Run()
+	r, err := ex.Run(&extractor.RunParams{})
 	if err != nil {
 		log.Fatal(err)
 	}
