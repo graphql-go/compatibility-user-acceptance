@@ -2,6 +2,7 @@ package extractor
 
 import (
 	"context"
+	"net/http"
 
 	"github.com/google/go-github/github"
 )
@@ -10,6 +11,7 @@ type Extractor struct {
 }
 
 type RunParams struct {
+	HTTPClient     *http.Client
 	Organization   string
 	RepositoryName string
 }
@@ -28,7 +30,7 @@ func New() *Extractor {
 }
 
 func (e *Extractor) Run(p *RunParams) (*RunResult, error) {
-	client := github.NewClient(nil)
+	client := github.NewClient(p.HTTPClient)
 	ctx := context.Background()
 	repo, _, err := client.Repositories.Get(ctx, p.Organization, p.RepositoryName)
 	if err != nil {
