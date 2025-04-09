@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
 
 	"github.com/graphql-go/compatibility-base/config"
 	"github.com/graphql-go/compatibility-user-acceptance/extractor"
@@ -13,6 +14,7 @@ func main() {
 
 	ex := extractor.Extractor{}
 	params := extractor.RunParams{
+		HTTPClient:     &http.Client{},
 		Organization:   "graphql-go",
 		RepositoryName: "graphql",
 	}
