@@ -12,7 +12,7 @@ import (
 func main() {
 	cfg := config.Config{}
 
-	ex := extractor.Extractor{}
+	ex := extractor.New()
 	params := extractor.RunParams{
 		HTTPClient:     &http.Client{},
 		Organization:   "graphql-go",

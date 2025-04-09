@@ -97,7 +97,7 @@ func TestExtractorRun(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.subTestName, func(t *testing.T) {
-			ex := &Extractor{}
+			ex := New()
 			params := RunParams{
 				HTTPClient: testClient(&testClientParams{
 					requestMethod:      tt.requestMethod,

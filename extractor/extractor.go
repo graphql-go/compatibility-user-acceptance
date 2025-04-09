@@ -25,7 +25,6 @@ type RunResult struct {
 }
 
 func New() *Extractor {
-
 	return &Extractor{}
 }
 
