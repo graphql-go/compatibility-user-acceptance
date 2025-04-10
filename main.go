@@ -15,28 +15,28 @@ import (
 // main is the entry point of the application. It initializes the extractor,
 // fetches repository metrics from GitHub, and displays the results.
 func main() {
-	// Load configuration
+	// Load configuration.
 	cfg := config.Config{}
 
-	// Create a new extractor instance
+	// Create a new extractor instance.
 	ex := extractor.New()
-	
-	// Configure extraction parameters for the graphql-go/graphql repository
+
+	// Configure extraction parameters for the graphql-go/graphql repository.
 	params := extractor.RunParams{
 		HTTPClient:     &http.Client{},
 		Organization:   "graphql-go",
 		RepositoryName: "graphql",
 	}
-	
-	// Run the extractor to fetch repository metrics
+
+	// Run the extractor to fetch repository metrics.
 	r, err := ex.Run(&params)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Display debug information if enabled
+	// Display debug information if enabled.
 	fmt.Println(cfg.IsDebug)
-	
-	// Display the extraction results
+
+	// Display the extraction results.
 	fmt.Printf("%+v\n", r)
 }
