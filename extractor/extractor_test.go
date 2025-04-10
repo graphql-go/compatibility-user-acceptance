@@ -13,52 +13,58 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// RoundTripperFunc is a function type that implements the http.RoundTripper interface.
-// This allows us to use functions as http.RoundTripper for testing.
+// RoundTripperFunc is a function type that implements the `http.RoundTripper` interface.
+// This allows us to use functions as `http.RoundTripper` for testing.
 type RoundTripperFunc func(*http.Request) (*http.Response, error)
 
-// RoundTrip implements the http.RoundTripper interface.
+// RoundTrip implements the `http.RoundTripper` interface.
 func (fn RoundTripperFunc) RoundTrip(r *http.Request) (*http.Response, error) {
 	return fn(r)
 }
 
 // testClientParams defines parameters used to configure the test HTTP client.
 type testClientParams struct {
-	// requestMethod is the HTTP method that should match the incoming request.
+	// requestMethod is the HTTP request method that is used to check whether or not the incoming request should be handled.
 	requestMethod string
-	// requestURL is the URL that should match the incoming request.
+
+	// requestURL is the HTTP request URL that is used to check whether or not the inconming request should be handled.
 	requestURL string
-	// responseBody is a function that returns the mock response body.
+
+	// responseBody is a function that is used to return the mocked HTTP response body.
 	responseBody func() ([]byte, error)
-	// responseStatusCode is the HTTP status code to return in the response.
+
+	// responseStatusCode is used to mock the HTTP response status code.
 	responseStatusCode int
 }
 
 // testClient creates a mock HTTP client that returns predefined responses.
-// It allows us to test the Extractor without making actual HTTP requests.
+// It allows us to test the Extractor without making actual HTTP requests
+// to the GitHub servers.
 func testClient(p *testClientParams) *http.Client {
 	httpClient := http.Client{
 		Transport: RoundTripperFunc(func(r *http.Request) (*http.Response, error) {
-			// Default response for non-matching requests
+			// Default response for non-matching requests.
 			resp := &http.Response{
 				Request:    r,
 				StatusCode: p.responseStatusCode,
 			}
 
 			// If the request method or URL doesn't match expected values,
-			// return the default response without a body
+			// return the default response without a body.
 			if r.Method != p.requestMethod || r.URL.String() != p.requestURL {
 				return resp, nil
 			}
 
-			// Get the mock response body
+			// Get the mock response body.
 			data, err := p.responseBody()
 			if err != nil {
-				return resp, nil
+				return nil, nil
 			}
 
-			// Create and return a response with the mock body
+			// Create the mocked response body.
 			body := bytes.NewReader(data)
+
+			// Return the mocked response.
 			return &http.Response{
 				Body:       io.NopCloser(body),
 				Request:    r,
@@ -67,10 +73,11 @@ func testClient(p *testClientParams) *http.Client {
 		}),
 	}
 
+	// return the mocked http client.
 	return &httpClient
 }
 
-// TestExtractorRun tests the Run method of the Extractor.
+// TestExtractorRun tests the `Run` method of the `Extractor`.
 // It covers both successful and error scenarios.
 func TestExtractorRun(t *testing.T) {
 	tests := []struct {
@@ -86,7 +93,7 @@ func TestExtractorRun(t *testing.T) {
 			requestMethod: "GET",
 			requestURL:    "https://api.github.com/repos/graphql-go/graphql",
 			responseBody: func() ([]byte, error) {
-				// Mock a GitHub repository with 8 stars
+				// Mock a GitHub repository with 8 stars.
 				stargazersCount := int(8)
 				repo := github.Repository{
 					StargazersCount: &stargazersCount,
@@ -116,8 +123,9 @@ func TestExtractorRun(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.subTestName, func(t *testing.T) {
-			// Create an extractor and run it with test parameters
+			// Create an extractor and run it with test parameters.
 			ex := New()
+
 			params := RunParams{
 				HTTPClient: testClient(&testClientParams{
 					requestMethod:      tt.requestMethod,
@@ -129,7 +137,7 @@ func TestExtractorRun(t *testing.T) {
 				RepositoryName: "graphql",
 			}
 
-			// Execute the Run method and check results
+			// Execute the `Run` method and check results.
 			result, err := ex.Run(&params)
 			if err != nil {
 				assert.EqualError(t, err, tt.expectedError.Error())
@@ -139,5 +147,4 @@ func TestExtractorRun(t *testing.T) {
 			assert.NotNil(t, result)
 		})
 	}
-
 }

@@ -17,8 +17,10 @@ type Extractor struct {
 type RunParams struct {
 	// HTTPClient is the HTTP client used for GitHub API requests.
 	HTTPClient *http.Client
+
 	// Organization is the GitHub organization name (e.g., "graphql-go").
 	Organization string
+
 	// RepositoryName is the GitHub repository name (e.g., "graphql").
 	RepositoryName string
 }
@@ -44,25 +46,26 @@ func New() *Extractor {
 // It fetches repository data from GitHub and returns the extracted metrics.
 // Returns an error if the GitHub API request fails.
 func (e *Extractor) Run(p *RunParams) (*RunResult, error) {
-	// Create a GitHub client using the provided HTTP client
+	// Create a GitHub client using the provided HTTP client.
 	client := github.NewClient(p.HTTPClient)
 	ctx := context.Background()
-	
-	// Fetch repository information from GitHub
+
+	// Fetch repository information from GitHub.
 	repo, _, err := client.Repositories.Get(ctx, p.Organization, p.RepositoryName)
 	if err != nil {
 		return nil, err
 	}
 
-	// Extract repository metrics
+	// Extract repository metrics.
 	r := &Repository{
 		StarsCount: *repo.StargazersCount,
 	}
 
-	// Create and return the result
+	// Create the result.
 	result := &RunResult{
 		Repository: r,
 	}
 
+	// Return the result.
 	return result, nil
 }
