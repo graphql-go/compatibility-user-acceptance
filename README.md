@@ -15,7 +15,7 @@ Current implementation supports the following GraphQL implementations:
   - GitHub Forks.
   - GitHub Repository License.
   - GitHub Repository Last Commit.
-- The end result compares the implementation and the reference in terms of percentage consolidating into a single number that is wired to a % that is the base line for considering that it passes or not the check. 
+  - GraphQL Specification Version.
 
 
 ### Contribute Back
