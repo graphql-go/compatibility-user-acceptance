@@ -7,16 +7,19 @@ Current implementation supports the following GraphQL implementations:
 
 ## Use Cases
 
-- Cross validation of compatibility between implementations leveraging the following DX metrics:
-  - GitHub Stars.
-  - GitHub Issues (Open/Closed).
-  - GitHub Issues (Open/Closed, comments that are related to the specification).
-  - GitHub Pull Requests (open/closed).
-  - GitHub Forks.
-  - GitHub Repository License.
-  - GitHub Repository Last Commit.
-  - GraphQL Specification Version.
-
+- Cross validation of compatibility between implementations leveraging the following DX metrics of the GitHub repository:
+  - Stars.
+  - Number of issues opened.
+  - Number of issues closed.
+  - Number of issues opened (Comments related to the GraphQL Specification).
+  - Number of issues closed (Comments related to the GraphQL Specification).
+  - Number of pull requests opened.
+  - Number of pull requests closed.
+  - Number of forks.
+  - License.
+  - Last commit date.
+  - Number of contributors.
+  - GraphQL specification version.
 
 ### Contribute Back
 
