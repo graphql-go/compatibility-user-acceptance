@@ -28,7 +28,13 @@ func main() {
 			},
 		}),
 	})
-	log.Println(cli)
+
+	runResult, err := cli.Run(&cmd.RunParams{})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println(runResult)
 
 	// Create a new extractor instance.
 	ex := extractor.New()
