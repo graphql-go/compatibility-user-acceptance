@@ -18,7 +18,7 @@ import (
 // fetches repository metrics from GitHub, and displays the results.
 func main() {
 	// Load configuration.
-	cfg := config.Config{}
+	cfg := config.New()
 
 	cli := cmd.New(&cmd.NewParams{
 		Bubbletea: bubbletea.New(&bubbletea.Params{
