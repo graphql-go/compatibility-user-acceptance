@@ -8,6 +8,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/graphql-go/compatibility-base/bubbletea"
+	"github.com/graphql-go/compatibility-base/cmd"
 	"github.com/graphql-go/compatibility-base/config"
 	"github.com/graphql-go/compatibility-user-acceptance/extractor"
 )
@@ -17,6 +19,16 @@ import (
 func main() {
 	// Load configuration.
 	cfg := config.Config{}
+
+	cli := cmd.New(&cmd.NewParams{
+		Bubbletea: bubbletea.New(&bubbletea.Params{
+			Choices: cfg.AvailableImplementations,
+			UI: bubbletea.UIParams{
+				Header: cfg.GraphqlSpecificationWithPrefix,
+			},
+		}),
+	})
+	log.Println(cli)
 
 	// Create a new extractor instance.
 	ex := extractor.New()
