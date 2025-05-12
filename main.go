@@ -11,6 +11,7 @@ import (
 	"github.com/graphql-go/compatibility-base/bubbletea"
 	"github.com/graphql-go/compatibility-base/cmd"
 	"github.com/graphql-go/compatibility-base/config"
+	"github.com/graphql-go/compatibility-base/implementation"
 	"github.com/graphql-go/compatibility-user-acceptance/extractor"
 )
 
@@ -20,11 +21,13 @@ func main() {
 	// Load configuration.
 	cfg := config.New()
 
+	header := cfg.GraphqlJSImplementation.Repo.String(implementation.RefImplementationPrefix)
+
 	cli := cmd.New(&cmd.NewParams{
 		Bubbletea: bubbletea.New(&bubbletea.Params{
 			Choices: cfg.AvailableImplementations,
 			UI: bubbletea.UIParams{
-				Header: cfg.GraphqlSpecificationWithPrefix,
+				Header: header,
 			},
 		}),
 	})
