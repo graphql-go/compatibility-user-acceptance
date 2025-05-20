@@ -11,8 +11,8 @@ Current implementation supports the following GraphQL implementations:
   - Stars.
   - Number of issues opened.
   - Number of issues closed.
-  - Number of issues opened (Comments related to the GraphQL Specification).
-  - Number of issues closed (Comments related to the GraphQL Specification).
+  - Number of issues opened (Comments related to the GraphQL Compatibility, keywords: specification, standard and parity).
+  - Number of issues closed(Comments related to the GraphQL Compatibility, keywords: specification, standard and parity).
   - Number of pull requests opened.
   - Number of pull requests closed.
   - Number of forks.
