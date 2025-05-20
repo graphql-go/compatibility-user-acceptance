@@ -20,6 +20,28 @@ Current implementation supports the following GraphQL implementations:
   - Last commit date.
   - Number of contributors.
   - GraphQL specification version.
+ 
+The difference ratio is calculated by dividing the (implementation - spec/implementation) and showed in percentage, and the result per item information is display as succeeded or failure whether or not it does not exceed the max difference ratio allowed.
+
+Eg.
+
+```
+Example 1:
+Specification License: MIT
+Reference Implementation License: MIT
+Difference Ratio: 0%
+Max Difference Ratio Allowed: 0%
+```
+
+```
+Example 2:
+Number Of Stars: 100k - 100%
+Reference Implementation Stars: 10k - 10%
+Difference Ratio: 90%
+Max Difference Ratio Allowed: 90%
+```
+
+It is useful to have the max difference ratio allowed because it helps to check per item level what is going on at that metric side and gives clear idea on what actions to take in order to make the reference implementation more user accepted.
 
 ### Contribute Back
 
