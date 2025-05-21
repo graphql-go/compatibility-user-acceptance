@@ -21,6 +21,28 @@ func main() {
 	// Load configuration.
 	cfg := config.New()
 
+	// Create a new extractor instance.
+	ex := extractor.New(cfg)
+
+	// Configure extraction parameters for the graphql-go/graphql repository.
+	params := extractor.RunParams{
+		HTTPClient:     &http.Client{},
+		Organization:   "graphql-go",
+		RepositoryName: "graphql",
+	}
+
+	// Run the extractor to fetch repository metrics.
+	r, err := ex.Run(&params)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Display debug information if enabled.
+	fmt.Println(cfg.IsDebug)
+
+	// Display the extraction results.
+	fmt.Printf("%+v\n", r)
+
 	header := cfg.GraphqlJSImplementation.Repo.String(implementation.RefImplementationPrefix)
 	headerWidth := uint(15)
 
@@ -75,26 +97,4 @@ func main() {
 	}
 
 	log.Println(runResult)
-
-	// Create a new extractor instance.
-	ex := extractor.New()
-
-	// Configure extraction parameters for the graphql-go/graphql repository.
-	params := extractor.RunParams{
-		HTTPClient:     &http.Client{},
-		Organization:   "graphql-go",
-		RepositoryName: "graphql",
-	}
-
-	// Run the extractor to fetch repository metrics.
-	r, err := ex.Run(&params)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Display debug information if enabled.
-	fmt.Println(cfg.IsDebug)
-
-	// Display the extraction results.
-	fmt.Printf("%+v\n", r)
 }
