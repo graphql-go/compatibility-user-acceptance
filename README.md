@@ -58,3 +58,9 @@ Running the library:
 ```
 ./bin/start.sh
 ```
+
+Running the library in debug mode:
+
+```
+DEBUG=true ./bin/start.sh
+```
