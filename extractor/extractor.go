@@ -7,10 +7,13 @@ import (
 	"net/http"
 
 	"github.com/google/go-github/github"
+
+	"github.com/graphql-go/compatibility-base/config"
 )
 
 // Extractor is responsible for fetching and processing GitHub repository data.
 type Extractor struct {
+	cfg *config.Config
 }
 
 // RunParams contains the parameters required to run the extractor.
@@ -38,14 +41,18 @@ type RunResult struct {
 }
 
 // New creates and returns a new Extractor instance.
-func New() *Extractor {
-	return &Extractor{}
+func New(cfg *config.Config) *Extractor {
+	return &Extractor{cfg: cfg}
 }
 
 // Run executes the extraction process using the provided parameters.
 // It fetches repository data from GitHub and returns the extracted metrics.
 // Returns an error if the GitHub API request fails.
 func (e *Extractor) Run(p *RunParams) (*RunResult, error) {
+	if e.cfg.IsDebug {
+		return TestData(), nil
+	}
+
 	// Create a GitHub client using the provided HTTP client.
 	client := github.NewClient(p.HTTPClient)
 	ctx := context.Background()

@@ -11,6 +11,8 @@ import (
 
 	"github.com/google/go-github/github"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/graphql-go/compatibility-base/config"
 )
 
 // RoundTripperFunc is a function type that implements the `http.RoundTripper` interface.
@@ -82,6 +84,7 @@ func testClient(p *testClientParams) *http.Client {
 func TestExtractorRun(t *testing.T) {
 	tests := []struct {
 		subTestName        string
+		cfg                *config.Config
 		requestMethod      string
 		requestURL         string
 		responseBody       func() ([]byte, error)
@@ -90,6 +93,7 @@ func TestExtractorRun(t *testing.T) {
 	}{
 		{
 			subTestName:   "Success",
+			cfg:           config.New(),
 			requestMethod: "GET",
 			requestURL:    "https://api.github.com/repos/graphql-go/graphql",
 			responseBody: func() ([]byte, error) {
@@ -110,7 +114,9 @@ func TestExtractorRun(t *testing.T) {
 			expectedError:      nil,
 		},
 		{
-			subTestName:   "Handles client repositories get response error",
+			subTestName: "Handles client repositories get response error",
+
+			cfg:           config.New(),
 			requestMethod: "test invalid get method",
 			requestURL:    "test invalid url",
 			responseBody: func() ([]byte, error) {
@@ -124,7 +130,7 @@ func TestExtractorRun(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.subTestName, func(t *testing.T) {
 			// Create an extractor and run it with test parameters.
-			ex := New()
+			ex := New(tt.cfg)
 
 			params := RunParams{
 				HTTPClient: testClient(&testClientParams{
