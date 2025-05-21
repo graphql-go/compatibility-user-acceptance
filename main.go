@@ -18,8 +18,14 @@ import (
 // main is the entry point of the application. It initializes the extractor,
 // fetches repository metrics from GitHub, and displays the results.
 func main() {
+
 	// Load configuration.
 	cfg := config.New()
+
+	// Display debug information if enabled.
+	if cfg.IsDebug {
+		log.Printf("DEBUG: %v", cfg.IsDebug)
+	}
 
 	// Create a new extractor instance.
 	ex := extractor.New(cfg)
@@ -35,11 +41,6 @@ func main() {
 	r, err := ex.Run(&params)
 	if err != nil {
 		log.Fatal(err)
-	}
-
-	// Display debug information if enabled.
-	if cfg.IsDebug {
-		fmt.Printf("Debug: %v", cfg.IsDebug)
 	}
 
 	header := cfg.GraphqlJSImplementation.Repo.String(implementation.RefImplementationPrefix)
@@ -90,10 +91,7 @@ func main() {
 
 	cli := cmd.New(&cliParams)
 
-	runResult, err := cli.Run(&cmd.RunParams{})
-	if err != nil {
+	if _, err := cli.Run(&cmd.RunParams{}); err != nil {
 		log.Fatal(err)
 	}
-
-	log.Println(runResult)
 }
