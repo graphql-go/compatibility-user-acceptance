@@ -38,10 +38,9 @@ func main() {
 	}
 
 	// Display debug information if enabled.
-	fmt.Println(cfg.IsDebug)
-
-	// Display the extraction results.
-	fmt.Printf("%+v\n", r)
+	if cfg.IsDebug {
+		fmt.Printf("Debug: %v", cfg.IsDebug)
+	}
 
 	header := cfg.GraphqlJSImplementation.Repo.String(implementation.RefImplementationPrefix)
 	headerWidth := uint(15)
@@ -69,7 +68,7 @@ func main() {
 					Rows: [][]string{
 						[]string{"GitHub:", "", "", "", "", ""},
 						[]string{"License", "MIT", "MIT", "0%", "0%", "✅"},
-						[]string{"Number Of Stars", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
+						[]string{"Number Of Stars", fmt.Sprintf("%v", r.Repository.StarsCount), "Loading...", "Loading...", "Loading...", "Loading..."},
 						[]string{"Number Of Issues Open", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
 						[]string{"Number Of Issues Closed", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
 						[]string{"Number Of Pull Requests Open", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
