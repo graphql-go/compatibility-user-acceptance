@@ -59,7 +59,7 @@ func main() {
 				bubbletea.NewTableModel(&bubbletea.TableModelParams{
 					Order: 2,
 					Headers: []bubbletea.TableHeader{
-						{Title: "Metric", Width: 35},
+						{Title: "Criteria", Width: 35},
 						{Title: "Spec: https://github.com/graphql/graphql-js", Width: headerWidth},
 						{Title: "Impl: https://github.com/graphql-go/graphql", Width: headerWidth},
 						{Title: "Diff Ratio", Width: headerWidth},
