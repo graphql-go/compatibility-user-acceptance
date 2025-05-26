@@ -4,7 +4,7 @@ go 1.24.1
 
 require (
 	github.com/google/go-github v17.0.0+incompatible
-	github.com/graphql-go/compatibility-base v0.0.0-20250521155150-61df33a683d8
+	github.com/graphql-go/compatibility-base v0.0.0-20250523174401-9531e1012285
 	github.com/stretchr/testify v1.10.0
 )
 
