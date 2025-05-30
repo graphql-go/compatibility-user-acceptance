@@ -22,6 +22,10 @@ func main() {
 	// Load configuration.
 	cfg := config.New()
 
+	defaultSpecTableHeader := fmt.Sprintf("Ref: %s", cfg.GraphqlJSImplementation.Repo.URL)
+	defaultImplTableHeader := "Impl: https://github.com/graphql-go/graphql"
+	choicesModelUIHeader := cfg.GraphqlJSImplementation.Repo.String(implementation.RefImplementationPrefix)
+
 	// Display debug information if enabled.
 	if cfg.IsDebug {
 		log.Printf("DEBUG: %v", cfg.IsDebug)
@@ -38,13 +42,10 @@ func main() {
 	}
 
 	// Run the extractor to fetch repository metrics.
-	r, err := ex.Run(&params)
-	if err != nil {
+	// TODO(@chris-ramon): Wire extractor run result to the CLI.
+	if _, err := ex.Run(&params); err != nil {
 		log.Fatal(err)
 	}
-
-	header := cfg.GraphqlJSImplementation.Repo.String(implementation.RefImplementationPrefix)
-	headerWidth := uint(15)
 
 	cliParams := cmd.NewParams{
 		Bubbletea: bubbletea.New(&bubbletea.Params{
@@ -53,37 +54,10 @@ func main() {
 					Order:   1,
 					Choices: cfg.AvailableImplementations,
 					UI: bubbletea.ChoicesModelUIParams{
-						Header: header,
+						Header: choicesModelUIHeader,
 					},
 				}),
-				bubbletea.NewTableModel(&bubbletea.TableModelParams{
-					Order: 2,
-					Headers: []bubbletea.TableHeader{
-						{Title: "Criteria", Width: 35},
-						{Title: "Spec: https://github.com/graphql/graphql-js", Width: headerWidth},
-						{Title: "Impl: https://github.com/graphql-go/graphql", Width: headerWidth},
-						{Title: "Diff Ratio", Width: headerWidth},
-						{Title: "Max Diff", Width: headerWidth},
-						{Title: "Result", Width: headerWidth},
-					},
-					Rows: [][]string{
-						[]string{"GitHub:", "", "", "", "", ""},
-						[]string{"License", "MIT", "MIT", "0%", "0%", "✅"},
-						[]string{"Number Of Stars", fmt.Sprintf("%v", r.Repository.StarsCount), "Loading...", "Loading...", "Loading...", "Loading..."},
-						[]string{"Number Of Issues Open", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
-						[]string{"Number Of Issues Closed", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
-						[]string{"Number Of Pull Requests Open", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
-						[]string{"Number Of Pull Requests Closed", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
-						[]string{"Number Of Forks", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
-						[]string{"Last Commit Date", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
-						[]string{"Number Of Contributors", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
-						[]string{"GraphQL Compatibility Keywords:", "", "", "", "", ""},
-						[]string{"Number Of Comments Open", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
-						[]string{"Number Of Comments Closed", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
-						[]string{"GraphQL:", "", "", "", "", ""},
-						[]string{"Specification Version", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
-					},
-				}),
+				newTableModel(defaultSpecTableHeader, defaultImplTableHeader),
 			},
 			BaseStyle: bubbletea.NewBaseStyle(),
 		}),
@@ -91,7 +65,57 @@ func main() {
 
 	cli := cmd.New(&cliParams)
 
-	if _, err := cli.Run(&cmd.RunParams{}); err != nil {
+	resultCallback := func(result *bubbletea.BubbleTeaResult) error {
+		choicesModelUIHeader := result.ChoicesModelResult.Choice
+		tableModel := newTableModel(defaultSpecTableHeader, choicesModelUIHeader)
+
+		if err := cli.UpdateModel(tableModel); err != nil {
+			log.Printf("failed to update table model: %v", err)
+			return err
+		}
+
+		return nil
+	}
+
+	runParams := &cmd.RunParams{
+		ResultCallback: resultCallback,
+	}
+
+	if _, err := cli.Run(runParams); err != nil {
 		log.Fatal(err)
 	}
+}
+
+// `newTableModel` creates and returns a pointer to `bubbletea.TableModel`.
+func newTableModel(specificationHeader string, implementationHeader string) *bubbletea.TableModel {
+	headerWidth := uint(16)
+
+	return bubbletea.NewTableModel(&bubbletea.TableModelParams{
+		Order: 2,
+		Headers: []bubbletea.TableHeader{
+			{Title: "Criteria", Width: 35},
+			{Title: specificationHeader, Width: headerWidth},
+			{Title: implementationHeader, Width: headerWidth},
+			{Title: "Diff Ratio", Width: headerWidth},
+			{Title: "Max Diff", Width: headerWidth},
+			{Title: "Result", Width: headerWidth},
+		},
+		Rows: [][]string{
+			[]string{"GitHub:", "", "", "", "", ""},
+			[]string{"License", "MIT", "MIT", "0%", "0%", "✅"},
+			[]string{"Number Of Stars", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
+			[]string{"Number Of Issues Open", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
+			[]string{"Number Of Issues Closed", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
+			[]string{"Number Of Pull Requests Open", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
+			[]string{"Number Of Pull Requests Closed", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
+			[]string{"Number Of Forks", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
+			[]string{"Last Commit Date", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
+			[]string{"Number Of Contributors", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
+			[]string{"GraphQL Compatibility Keywords:", "", "", "", "", ""},
+			[]string{"Number Of Comments Open", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
+			[]string{"Number Of Comments Closed", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
+			[]string{"GraphQL:", "", "", "", "", ""},
+			[]string{"Specification Version", "Loading...", "Loading...", "Loading...", "Loading...", "Loading..."},
+		},
+	})
 }
